@@ -1,14 +1,23 @@
 # MavAssist
 
-Student-services assistant for CSE 6324, Team 3. React/TypeScript/Vite/Tailwind frontend, FastAPI/SQLAlchemy API, PostgreSQL 16/pgvector production database, BM25/MiniLM passage retrieval and optional OpenAI cited answer generation. Includes FR-01–FR-10 application paths, automated tests, Docker, CI, deployment configuration and a requirement-by-requirement checklist.
+A UTA student-services assistant built for **CSE 6324 — Team 3**. Find campus resources, ask questions, and get next steps with links to official sources.
 
-**Contextual chat:** [RAG setup, source import and upgrade](docs/RAG.md).
+## Features
 
-**Start here:** [Deployment instructions](DEPLOYMENT.md), [requirement coverage and limits](docs/REQUIREMENTS.md), [user guide](docs/USER_GUIDE.md), [verification results](docs/VERIFICATION.md).
+- Campus directory with search and category filters.
+- Chat with follow-up context, source citations, and suggested questions.
+- Student accounts, saved resources, and recently viewed services.
+- Admin tools for managing resources, notices, and usage analytics.
 
-## Quick start on Windows — no Docker or API key required
+## Technology
 
-Install Python 3.12 and Node.js 22.12+. Extract the ZIP into a normal writable folder. Open PowerShell there:
+React, TypeScript, Vite, Tailwind CSS, FastAPI, and SQLAlchemy. Local setup uses SQLite and source-based answers. PostgreSQL/pgvector and AI-generated answers are available through additional configuration.
+
+## Run locally on Windows
+
+Install **Python 3.12** and **Node.js 22.12+**. Open PowerShell in the project folder.
+
+**1. Set up and start the backend:**
 
 ```powershell
 python -m venv .venv
@@ -17,11 +26,10 @@ python -m venv .venv
 cd backend
 ..\.venv\Scripts\python.exe -m alembic upgrade head
 ..\.venv\Scripts\python.exe -m app.manage seed
-..\.venv\Scripts\python.exe -m app.manage create-admin
 ..\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-access-log
 ```
 
-Keep that window open. In another PowerShell window, from the extracted project folder:
+**2. Open another PowerShell window in the project folder and start the frontend:**
 
 ```powershell
 cd frontend
@@ -29,29 +37,29 @@ npm.cmd ci
 npm.cmd run dev
 ```
 
-Open **http://localhost:5173**. Create a student account, or sign in with the administrator credentials you entered. API documentation: **http://127.0.0.1:8000/docs**. No fixed demo password is shipped.
+**3. Open [MavAssist](http://localhost:5173) and create a student account.** Keep both terminals running: one serves the API and the other serves the website. API documentation is available at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 
-This quick start uses **SQLite + BM25 source retrieval and cited summaries**, explicitly labeled in the chatbot. It is useful for local functional demonstrations; it is **not** the PostgreSQL/semantic/hosted-AI deployment required by the proposal. Follow DEPLOYMENT.md for the full configuration.
+To create an administrator, run this from the `backend` folder in another terminal:
 
-## Layout
-
-```text
-backend/app/         API, models, authentication, recommendation, seed/maintenance commands
-backend/migrations/ Initial Alembic schema + pgvector extension/index
-backend/tests/       API acceptance, authorization, privacy and fallback checks
-frontend/src/        Responsive student/admin interfaces and frontend unit checks
-frontend/tests/      Browser workflows and axe accessibility checks
-scripts/             Configuration, 100-question evaluation, k6 load scenario
-docs/                Architecture, traceability, test/operations and team handoff
-docker-compose.yml   Full local PostgreSQL/API/nginx deployment
-render.yaml          Render API deployment blueprint
-.github/workflows/   PostgreSQL/API, frontend, browser and evaluation CI
+```powershell
+..\.venv\Scripts\python.exe -m app.manage create-admin
 ```
 
-## Important scope details
+The local setup works without an API key. It returns cited source summaries; AI-generated answers require a configured API key and model. Verify current campus details on the linked official pages.
 
-* Fifty seed **office/service records** are included. They are review-required starter records, not independently verified university directory data. Location/hours/contact deliberately direct users to official pages instead of inventing details. Administrators must curate these fields and verify each source before an assessed or public release.
-* Hosted RAG is implemented, but requires a real key, selected model, model download and PostgreSQL deployment. Offline keyword results are never presented as hosted AI results.
-* The chat retrieves source passages and generates explanations/next steps with validated citations when a model is configured. Without a key it displays cited source summaries. Full details and corpus limits are in docs/RAG.md.
-* NFR performance, independent AI accuracy, human SUS scores and live cloud availability cannot be claimed from a source bundle. Their scripts/protocols are included; see REQUIREMENTS.md.
-* Nothing here changes the original WBS owners or schedule, and generated source is not evidence that a named team member completed their assigned work.
+## Documentation
+
+- [Deployment instructions](DEPLOYMENT.md)
+- [Chat and RAG setup](docs/RAG.md)
+- [User guide](docs/USER_GUIDE.md)
+- [Requirements](docs/REQUIREMENTS.md)
+- [Test results](docs/VERIFICATION.md)
+
+## Contributors
+
+- Ashwinder Singh
+- Krisha Patel
+- Suhas Surendra Kumar
+- Harmanpreet Kaur
+
+Independent student project; not an official UTA service.
