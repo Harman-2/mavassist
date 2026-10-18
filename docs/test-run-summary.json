@@ -1,0 +1,98 @@
+{
+  "date": "2026-10-15",
+  "backend": {
+    "tests_passed": 22,
+    "statement_coverage_percent": 92.51,
+    "database": "SQLite isolated tests; PostgreSQL CI supplied but not executed locally"
+  },
+  "frontend_unit_tests_passed": 3,
+  "production_build": "passed",
+  "browser_tests": [
+    {
+      "browser": "chromium",
+      "test": "student: registration, search/filter, detail, notices, bookmark, recent, chat and rating",
+      "status": "passed",
+      "duration_ms": 8694
+    },
+    {
+      "browser": "chromium",
+      "test": "primary student pages: no serious or critical WCAG issues; responsive navigation",
+      "status": "passed",
+      "duration_ms": 16339
+    },
+    {
+      "browser": "chromium",
+      "test": "admin: resource lifecycle, category and notice CRUD, analytics",
+      "status": "passed",
+      "duration_ms": 10991
+    },
+    {
+      "browser": "firefox",
+      "test": "student: registration, search/filter, detail, notices, bookmark, recent, chat and rating",
+      "status": "passed",
+      "duration_ms": 21342
+    },
+    {
+      "browser": "firefox",
+      "test": "primary student pages: no serious or critical WCAG issues; responsive navigation",
+      "status": "passed",
+      "duration_ms": 21405
+    },
+    {
+      "browser": "firefox",
+      "test": "admin: resource lifecycle, category and notice CRUD, analytics",
+      "status": "passed",
+      "duration_ms": 14371
+    },
+    {
+      "browser": "webkit",
+      "test": "student: registration, search/filter, detail, notices, bookmark, recent, chat and rating",
+      "status": "passed",
+      "duration_ms": 29938
+    },
+    {
+      "browser": "webkit",
+      "test": "primary student pages: no serious or critical WCAG issues; responsive navigation",
+      "status": "passed",
+      "duration_ms": 44025
+    },
+    {
+      "browser": "webkit",
+      "test": "admin: resource lifecycle, category and notice CRUD, analytics",
+      "status": "passed",
+      "duration_ms": 35237
+    }
+  ],
+  "npm_audit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "docker_compose_config": "passed",
+  "docker_engine": "not running; image/container integration not executed",
+  "hosted_ai": "no API key supplied; real provider call not executed",
+  "performance_and_human_study": "not measured",
+  "backend_installed_dependency_audit": {
+    "vulnerabilities": 0,
+    "scope": "installed backend/test dependencies in isolated target directory; re-audit deployment image"
+  },
+  "rag_update": {
+    "retrieval": "BM25 with optional MiniLM/pgvector hybrid",
+    "answers": "generated cited paragraphs/steps when a key/model are configured; curated source summaries otherwise",
+    "conversation_history": "last 3 turns, redacted, not persisted",
+    "reviewed_policy_passages": 5,
+    "regressions": [
+      "exact tuition-refund question",
+      "refund timing follow-up",
+      "new-topic switch",
+      "Flywire conditions",
+      "unknown citations",
+      "archive exclusion",
+      "import validation"
+    ]
+  },
+  "browser_run_note": "Chromium/Firefox passed in the combined run; WebKit rerun passed after ignoring test artifacts in the dev watcher and increasing the full-workflow timeout to 60s."
+}

@@ -1,0 +1,72 @@
+name: MavAssist checks
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  api:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env: {POSTGRES_USER: mavassist, POSTGRES_PASSWORD: test-only-password, POSTGRES_DB: mavassist_test}
+        ports: ["5432:5432"]
+        options: --health-cmd "pg_isready -U mavassist -d mavassist_test" --health-interval 5s --health-timeout 3s --health-retries 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install -r backend/requirements-dev.txt
+      - run: pytest tests --cov=app --cov-fail-under=70 --cov-report=xml --junitxml=api-tests.xml
+        working-directory: backend
+        env:
+          TEST_DATABASE_URL: postgresql+psycopg://mavassist:test-only-password@localhost:5432/mavassist_test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: api-evidence, path: 'backend/*xml'}
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: npm, cache-dependency-path: frontend/package-lock.json}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install -r backend/requirements-dev.txt
+      - run: python scripts/configure.py
+      - run: python -m alembic upgrade head && python -m app.manage seed
+        working-directory: backend
+      - run: |
+          python -c "import bcrypt; from app.db import SessionLocal,User; db=SessionLocal(); db.add(User(name='CI Admin',email='ci-admin@example.com',password_hash=bcrypt.hashpw(b'CI-only-password123!',bcrypt.gensalt(12)).decode(),role='administrator')); db.commit()"
+          RATE_LIMIT=false uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-access-log > /tmp/mavassist-api.log 2>&1 &
+        working-directory: backend
+      - run: npm ci && npm run build && npm test && npx playwright install --with-deps chromium firefox webkit
+        working-directory: frontend
+      - run: npm run dev -- --strictPort > /tmp/mavassist-web.log 2>&1 &
+        working-directory: frontend
+      - run: |
+          for i in {1..30}; do curl --fail http://127.0.0.1:8000/health && curl --fail http://127.0.0.1:5173 && break || sleep 2; done
+          npx playwright test
+        working-directory: frontend
+        env: {E2E_ADMIN_EMAIL: ci-admin@example.com, E2E_ADMIN_PASSWORD: CI-only-password123!}
+      - name: Offline routing evaluation (not hosted AI acceptance)
+        run: |
+          export MAVASSIST_TOKEN=$(python -c "import httpx; r=httpx.post('http://127.0.0.1:8000/api/auth/register',json={'name':'CI Eval','email':'eval@example.com','password':'CI-eval-password123!'}); r.raise_for_status(); print(r.json()['access_token'])")
+          EVAL_NO_DELAY=true python scripts/evaluate_ai.py --output offline-routing.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-evidence
+          path: |
+            frontend/playwright-report/
+            frontend/test-results/
+            offline-routing.json
+  hosted-ai:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install httpx
+      - run: python scripts/evaluate_ai.py --api "$STAGING_API" --require-rag
+        env:
+          STAGING_API: ${{ secrets.STAGING_API }}
+          MAVASSIST_TOKEN: ${{ secrets.STAGING_STUDENT_TOKEN }}

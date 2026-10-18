@@ -1,0 +1,112 @@
+[
+  {
+    "key": "uta-refund-overpayment",
+    "service_name": "Student Accounts",
+    "title": "Excess tuition payments and credit-balance refunds",
+    "content": "UTA issues refunds when payments or credits leave a credit balance after eligible charges are covered. An extra tuition payment does not by itself establish the final refundable amount. UTA recommends direct deposit for registration-charge refunds.",
+    "steps": [
+      "Check whether your student account shows a credit balance; contact Student Accounts if the amount is unclear."
+    ],
+    "keywords": [
+      "refund",
+      "overpayment",
+      "overpaid",
+      "paid extra",
+      "tuition",
+      "credit balance",
+      "reimbursement"
+    ],
+    "source_url": "https://www.uta.edu/business-affairs/student-accounts/refunds",
+    "reviewed_at": "2026-10-14"
+  },
+  {
+    "key": "uta-refund-status",
+    "service_name": "Student Accounts",
+    "title": "Checking refund status and contacting Student Accounts",
+    "content": "Check refund status in MyMav by opening Accounts and choosing Refund in the left sidebar. UTA sends an email after processing. Its FAQ lists an additional 2-3 business days for direct deposit or 3-5 for a mailed check after processing; these are not promised processing dates. Questions can be sent to studentaccounts@uta.edu.",
+    "steps": [
+      "Sign in to MyMav, open Accounts, then select Refund.",
+      "If the status or credit balance is unclear, contact studentaccounts@uta.edu through your own email; do not share account identifiers in this chat."
+    ],
+    "keywords": [
+      "refund",
+      "status",
+      "how",
+      "receive",
+      "when",
+      "time",
+      "long",
+      "mymav",
+      "email",
+      "contact",
+      "processed"
+    ],
+    "source_url": "https://www.uta.edu/business-affairs/student-accounts/faq/refunds",
+    "reviewed_at": "2026-10-14"
+  },
+  {
+    "key": "uta-refund-delivery",
+    "service_name": "Student Accounts",
+    "title": "Refund payment method, mailing address and holds",
+    "content": "Where possible, UTA returns credit-card payment refunds to the same card. Keep your MyMav mailing address and direct-deposit bank details current. A refund hold caused by dropping classes normally releases four days after the latest drop activity without action from the student.",
+    "steps": [
+      "Review the refund status and any holds in MyMav.",
+      "Check that the mailing address and any direct-deposit details in MyMav are current."
+    ],
+    "keywords": [
+      "refund",
+      "card",
+      "credit card",
+      "bank",
+      "direct deposit",
+      "hold",
+      "drop",
+      "withdraw",
+      "mailing address"
+    ],
+    "source_url": "https://www.uta.edu/business-affairs/student-accounts/refunds/where-is-my-refund",
+    "reviewed_at": "2026-10-14"
+  },
+  {
+    "key": "uta-flywire-overpayment",
+    "service_name": "Student Accounts",
+    "title": "Flywire overpayment handling",
+    "content": "UTA's payment page distinguishes Flywire overpayments: an excess of up to $500 is refunded to the student, while an excess above $500 is returned to the originating bank. This rule is specific to Flywire and should not be applied to a different payment method.",
+    "steps": [
+      "If you paid through Flywire, compare your payment with the total charges in your account.",
+      "Ask Student Accounts to confirm how the Flywire overpayment rule applies to your payment."
+    ],
+    "keywords": [
+      "flywire",
+      "international wire",
+      "overpayment",
+      "overpaid",
+      "refund",
+      "originating bank"
+    ],
+    "source_url": "https://www.uta.edu/business-affairs/student-accounts/payment-information/make-a-payment",
+    "reviewed_at": "2026-10-14"
+  },
+  {
+    "key": "uta-making-payment",
+    "service_name": "Student Accounts",
+    "title": "Pay tuition and fees in MyMav and TouchNet",
+    "content": "For online payments, UTA directs students through MyUTA/MyMav: open Accounts, choose Make a Payment, and use the TouchNet payment portal. In TouchNet, choose Make Payment and select the charges to pay. The payment page notes that a pop-up blocker may need to be disabled for the portal.",
+    "steps": [
+      "Sign in through the official MyUTA/MyMav link and open Accounts, then Make a Payment.",
+      "In TouchNet, select Make Payment and the charges you intend to pay."
+    ],
+    "keywords": [
+      "payment",
+      "pay",
+      "tuition",
+      "bill",
+      "fees",
+      "touchnet",
+      "portal",
+      "balance"
+    ],
+    "source_url": "https://www.uta.edu/business-affairs/student-accounts/payment-information/make-a-payment",
+    "reviewed_at": "2026-10-14"
+  }
+]

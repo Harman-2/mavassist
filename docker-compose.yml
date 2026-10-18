@@ -1,0 +1,43 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: mavassist
+      POSTGRES_USER: mavassist
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run python scripts/configure.py first}
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mavassist -d mavassist"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  api:
+    build:
+      context: ./backend
+      args:
+        INSTALL_AI: ${INSTALL_AI:-true}
+    environment:
+      APP_ENV: development
+      DATABASE_URL: postgresql+psycopg://mavassist:${POSTGRES_PASSWORD}@db:5432/mavassist
+      JWT_SECRET: ${JWT_SECRET:?Run python scripts/configure.py first}
+      CORS_ORIGINS: http://localhost:8080,http://127.0.0.1:8080
+      AI_MODE: ${AI_MODE:-rag}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-}
+      RATE_LIMIT: "true"
+    depends_on:
+      db: {condition: service_healthy}
+    ports: ["127.0.0.1:8000:8000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 120s
+  web:
+    build: ./frontend
+    depends_on:
+      api: {condition: service_healthy}
+    ports: ["127.0.0.1:8080:80"]
+volumes:
+  postgres_data:
